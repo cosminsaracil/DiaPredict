@@ -1,60 +1,14 @@
 Cell 1: Environment Setup and Data Loading
 
-Purpose:
+Setting up the environment. It imports essential Python libraries required for data analysis, manipulation, and visualization, ensuring that all necessary tools are available for subsequent steps in your pipeline.
+Verifying the environment. It prints details about the Python environment, such as the executable path, version, and site packages, which helps confirm that the correct environment is being used—a useful check for reproducibility or debugging.
+Loading the dataset: It specifies the path to a CSV file containing diabetes-related data, checks if the file exists, and loads it into a pandas DataFrame for further processing. It also provides a quick preview of the data by displaying column names and the first few rows.
 
-    -Imports essential libraries: numpy for numerical operations, pandas for data manipulation, matplotlib and seaborn for visualization, and sys/site for environment information.
-    -Prints Python environment details (executable path, version, site packages) to verify the setup.
-    -Specifies the path to a CSV file (diabetes_data.csv) containing diabetes-related data.
-    -Checks if the file exists using os.path.exists() and provides feedback.
-    -Loads the dataset into a pandas DataFrame (df) using pd.read_csv(), treating the first row as headers.
-    -Prints the column names and the first five rows of the dataset using df.head() to inspect the data.
-
-Output:
-
-    -Confirms the Python environment (e.g., version 3.11.7).
-    -Indicates successful data loading with messages like "Data has been loaded!".
-    -Displays headers: ['Age', 'Sex', 'HighChol', 'CholCheck', 'BMI', 'Smoker', 'HeartDiseaseorAttack', 'PhysActivity', 'Fruits', 'Veggies', 'HvyAlcoholConsump', 'GenHlth', 'MentHlth', 'PhysHlth', 'DiffWalk', 'Stroke', 'HighBP', 'Diabetes'].
-    -Shows a sample of the data (e.g., first five rows with integer values for each feature).
+Important note. The data is loaded locally because of the nature of the dataset. If you plan to use this code make sure to make a copy of the dataset available on Kaggle.
 
 Cell 4: Unique Values per Column
 
-unique_values = {}
-for col in df.columns:
-    unique_values[col] = df[col].value_counts().shape[0]
-pd.DataFrame(unique_values, index=['unique value count']).transpose()
-
-Purpose:
-
-    -Calculates the number of unique values in each column to assess feature variability.
-    -Creates a dictionary (unique_values) where keys are column names and values are the count of unique entries.
-    -Converts it to a DataFrame for better readability.
-
-Output:
-
-    Examples:
-        Age: 13 unique values (likely age categories).
-        Sex: 2 unique values (e.g., 0 for female, 1 for male).
-        BMI: 80 unique values (body mass index varies widely).
-        Diabetes: 2 unique values (0 for no diabetes, 1 for diabetes).
-    This helps understand the nature of each feature (e.g., binary vs. continuous-like).
+This cell performs a straightforward yet insightful task in Exploratory Data Analysis (EDA). It counts the number of unique values per column and presents the results in a neat, readable format.
 
 Cell 5: Data Preparation (Implied Steps)
 
-Purpose:
-
-    This code is designed to visualize the frequency distribution of values in multiple columns of a DataFrame (df) using histograms. It focuses on all columns except one called 'stroke', because 'stroke' is not relevant for this analysis.
-
-    This is a common technique in exploratory data analysis (EDA). It helps you:
-
-    Understand how values are distributed in each column.
-    Spot patterns, such as skewness (e.g., more low values than high ones), outliers, or whether a column is categorical (few bars) or continuous (many bars).
-
-Cell 6: Visualize correlations
-
-df.corrwith(df['Diabetes']).plot(kind='bar', grid=True, figsize=(10, 6), title="Correlation with Diabetes", color="deepskyblue")
-
-This computes the Pearson correlation coefficient between each column in the DataFrame df and the 'Diabetes' column.
-The Pearson correlation measures the strength and direction of the linear relationship between two variables. It returns a Series where:
-
-    The index is the column names of df.
-    The values are the correlation coefficients, ranging from -1 to 1.
