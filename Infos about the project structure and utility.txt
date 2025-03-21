@@ -1,14 +1,32 @@
 Cell 1: Environment Setup and Data Loading
 
-Setting up the environment. It imports essential Python libraries required for data analysis, manipulation, and visualization, ensuring that all necessary tools are available for subsequent steps in your pipeline.
-Verifying the environment. It prints details about the Python environment, such as the executable path, version, and site packages, which helps confirm that the correct environment is being used—a useful check for reproducibility or debugging.
-Loading the dataset: It specifies the path to a CSV file containing diabetes-related data, checks if the file exists, and loads it into a pandas DataFrame for further processing. It also provides a quick preview of the data by displaying column names and the first few rows.
+    Setting up the environment. It imports essential Python libraries required for data analysis, manipulation, and visualization, ensuring that all necessary tools are available for subsequent steps in your pipeline.
+    Verifying the environment. It prints details about the Python environment, such as the executable path, version, and site packages, which helps confirm that the correct environment is being used—a useful check for reproducibility or debugging.
+    Loading the dataset: It specifies the path to a CSV file containing diabetes-related data, checks if the file exists, and loads it into a pandas DataFrame for further processing. It also provides a quick preview of the data by displaying column names and the first few rows.
 
-Important note. The data is loaded locally because of the nature of the dataset. If you plan to use this code make sure to make a copy of the dataset available on Kaggle.
+    Important note. The data is loaded locally because of the nature of the dataset. If you plan to use this code make sure to make a copy of the dataset available on Kaggle.
 
-Cell 4: Unique Values per Column
+Cell 4: Specificity of the values
 
-This cell performs a straightforward yet insightful task in Exploratory Data Analysis (EDA). It counts the number of unique values per column and presents the results in a neat, readable format.
+    This cell performs a straightforward yet insightful task in Exploratory Data Analysis (EDA). It counts the number of unique values per column and presents the results in a neat, readable format.
 
-Cell 5: Data Preparation (Implied Steps)
+Cell 5: Distribution of data
 
+    Designed to check the frequency of values in various columns of your (df). This cell is a key part of Exploratory Data Analysis (EDA), helping you visualize how data is distributed across different features.
+    Generates a grid of histograms, one for each feature in your (df) (except 'stroke'). A histogram shows how often different values or ranges of values appear in a column. For example:
+
+    If a feature like “age” has a histogram with a peak at 40, it means many people in your dataset are around 40 years old.
+    If a categorical feature like “gender” has two bars (e.g., for “Male” and “Female”), it shows how many entries fall into each category.
+
+Cell 6: Correlation between any features
+
+    The cell aims to visualize how each feature in your dataset relates to the target variable, 'Diabetes'.
+    By default, it uses Pearson correlation, which measures the strength and direction of the linear relationship between two variables. The output is a Series where each index is a column name from df, and each value is the correlation coefficient (ranging from -1 to 1) with 'Diabetes'.
+
+    Features with high positive (close to 1) or negative (close to -1) correlations are likely more relevant for predicting 'Diabetes'.
+    Features with correlations near zero may have little linear relationship with the target and could potentially be dropped to simplify your model.
+
+    Positive correlations mean that as the feature value increases, 'Diabetes' tends to increase (e.g., higher age might correlate with higher diabetes risk).
+    Negative correlations suggest the opposite (e.g., higher physical activity might reduce diabetes likelihood).
+
+    While this plot focuses on the target, it’s a reminder to check for multicollinearity (high correlations between features) later, as it can affect models like linear regression.
