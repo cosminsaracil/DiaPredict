@@ -73,3 +73,30 @@ Cell 9: Data splitting
 
 Cell 15: Model instance
     
+    clf_gini = DecisionTreeClassifier(criterion='gini', max_depth=3, random_state=0)
+
+        criterion='gini': The model uses the Gini impurity to decide how to split the data. Gini measures how "mixed" the classes are in each node, aiming to create pure nodes (e.g., all "diabetes" or all "no diabetes"). It’s a fast and effective method for classification.
+        max_depth=3: The tree will only grow to 3 levels deep. This keeps the model simple and helps avoid overfitting, where it might memorize the training data instead of generalizing to new data.
+        random_state=0: This fixes the random seed, so the tree’s structure stays the same every time you run the code. It’s great for consistency and reproducibility.
+
+Cell 16: Prediciton
+    
+    y_pred_gini = clf_gini.predict(X_test)
+
+        This line uses the trained model (clf_gini) to make predictions based on the test features (X_test).
+        Result: y_pred_gini is an array of predicted labels (e.g., 0s and 1s if it’s a binary classification problem like predicting diabetes). These are the model’s guesses for the target variable based on the test data.
+
+    print('Model accuracy score with criterion gini index: {0:0.4f}'.format(accuracy_score(y_test, y_pred_gini)))
+
+    This calculates the accuracy by comparing y_pred_gini (predictions) with y_test (actual labels) and prints it with four decimal places.
+        Accuracy: This is the percentage of predictions that match the true labels.
+
+Cell Gini tree classifier
+
+    Creates a visualization of a decision tree classifier, helping you see how it decides outcomes like diabetes prediction.
+    Decision Nodes: Internal nodes showing the feature and threshold used for splitting (e.g., “glucose > 120”).
+    Leaf Nodes: Terminal nodes with the predicted class and sample counts, reflecting the Gini impurity-based decisions.
+   
+    feature_names=X_train.columns: This labels each feature with its actual name (e.g., “Age”, “BMI”), making the tree easier to understand.
+    class_names=['No Diabetes', 'Diabetes']: This labels the classes with meaningful names, especially useful for binary classification tasks like diabetes prediction.
+    filled=True: This colors the nodes based on the majority class at each leaf, enhancing visual interpretation by showing where the tree predicts each class.
