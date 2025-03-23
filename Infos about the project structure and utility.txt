@@ -6,11 +6,7 @@ Cell 1: Environment Setup and Data Loading
 
     Important note. The data is loaded locally because of the nature of the dataset. If you plan to use this code make sure to make a copy of the dataset available on Kaggle.
 
-Cell 4: Specificity of the values
-
-    It counts the number of unique values per column and presents the results in a neat, readable format.
-
-Cell 5: Distribution of data
+Cell 4: Distribution of data
 
     Designed to check the frequency of values in various columns of your (df). This cell is a key part of Exploratory Data Analysis (EDA), helping you visualize how data is distributed across different features.
     Generates a grid of histograms, one for each feature in your (df) (except 'stroke'). A histogram shows how often different values or ranges of values appear in a column. For example:
@@ -18,7 +14,7 @@ Cell 5: Distribution of data
     If a feature like “age” has a histogram with a peak at 40, it means many people in your dataset are around 40 years old.
     If a categorical feature like “gender” has two bars (e.g., for “Male” and “Female”), it shows how many entries fall into each category.
 
-Cell 6: Correlation between any features
+Cell 5: Correlation between any features
 
     The cell aims to visualize how each feature in your dataset relates to the target variable, 'Diabetes'.
     By default, it uses Pearson correlation, which measures the strength and direction of the linear relationship between two variables. The output is a Series where each index is a column name from df, and each value is the correlation coefficient (ranging from -1 to 1) with 'Diabetes'.
@@ -31,7 +27,7 @@ Cell 6: Correlation between any features
 
     While this plot focuses on the target, it’s a reminder to check for multicollinearity (high correlations between features) later, as it can affect models like linear regression.
 
-Cell 7: Heatmap
+Cell 6: Heatmap
 
     Creates a correlation heatmap for df.
     cmap='coolwarm': Applies the “coolwarm” color scheme—blue for negative correlations, red for positive ones, and neutral colors near zero.
@@ -60,7 +56,7 @@ Cell 7: Heatmap
             Blue: Negative correlation (features move oppositely).
             White/Pale: Little to no correlation.
 
-Cell 11: Data splitting
+Cell 9: Data splitting
     
     Prepares the dataset for training and evaluating a machine learning model by splitting it into training and testing sets.
     Defining the target variable (y)
@@ -71,13 +67,13 @@ Cell 11: Data splitting
     X_train, y_train: Training features and target (80% of the data).
     X_test, y_test: Testing features and target (20% of the data).
 
-Cell 12 : Hyperparameter tunning 
+Cell 10 : Hyperparameter tunning 
 
     Hyperparameter Tuning: Testing different combinations of parameters to improve results.
     K-Folds Cross-Validation: The cv=5 in GridSearchCV implements 5-fold cross-validation. 
     Random Seeding: random_state=42 ensures reproducibility, aligning with the need for random seeding in splits.
 
-Cell 13: Ablation testing
+Cell 11: Ablation testing
 
     Purpose: This cell performs ablation testing by varying the max_depth parameter of a Decision Tree Classifier (1, 3, 5, 7, unlimited) to see how tree depth impacts performance.
     Process: For each depth, it trains a new model on X_train and y_train, predicts on X_test, computes accuracy, and stores/results are printed.
@@ -151,3 +147,116 @@ Cell 15 : K-Folds Cross-Validation
         Your Output: F1 - Mean: 0.7509, Std: 0.0047
             Mean (0.7509): An F1 of 75.09% reflects a good balance between precision (72.22%) and recall (78.25%).
             Std (0.0047): F1 varies by ±0.47%, indicating stable performance.
+
+Cell 16: Evaluation metrics
+
+    Purpose: Evaluates the tuned Decision Tree model (clf_gini) on the initial test set (X_test) by computing standard classification metrics and a confusion matrix.
+    Process:
+
+        Predicts labels for X_test using clf_gini (from hyperparameter tuning).
+        Prints a classification report (accuracy, precision, recall, F1 per class).
+        Prints a confusion matrix (TP, FN, FP, TN).
+
+            Classification Report:
+                    precision    recall  f1-score   support
+    No Diabetes       0.77      0.69      0.73      7090
+    Diabetes          0.72      0.79      0.75      7049
+    accuracy                              0.74     14139
+    macro avg         0.74      0.74      0.74     14139
+    weighted avg      0.74      0.74      0.74     14139
+
+    Key Terms
+
+    Support: Number of true instances per class in the test set.
+    Precision: How many predicted positives are actually positive.
+    Recall: How many actual positives are correctly predicted.
+    F1-Score: Harmonic mean of precision and recall.
+    Accuracy: Overall proportion of correct predictions.
+
+        Classification Report Breakdown
+
+    No Diabetes (Class 0)
+        Precision: 0.77: Of all instances predicted as “No Diabetes,” 77% were correct. 23% were falsely predicted as negative (false negatives misclassified as positives).
+        Recall: 0.69: Of all actual “No Diabetes” cases (7090), 69% were correctly identified. 31% were missed (false positives).
+        F1-Score: 0.73: Balances precision and recall — slightly favoring precision.
+        Support: 7090: Number of true “No Diabetes” cases in the test set.
+    Diabetes (Class 1)
+        Precision: 0.72: Of all instances predicted as “Diabetes,” 72% were correct. 28% were falsely predicted as positive (false positives).
+        Recall: 0.79: Of all actual “Diabetes” cases (7049), 79% were correctly identified. 21% were missed (false negatives).
+        F1-Score: 0.75: Good balance, slightly favoring recall.
+        Support: 7049: Number of true “Diabetes” cases in the test set.
+    Accuracy: 0.74
+        74% of all predictions (14,139 total) were correct. Matches k-folds mean (0.7405), showing consistency.
+    Macro Avg: 0.74
+        Average of precision, recall, and F1 across classes, unweighted by support. Equal performance across both classes.
+    Weighted Avg: 0.74
+        Same as macro avg here due to nearly balanced classes (7090 vs. 7049).
+
+
+         Confusion Matrix:
+            [[4875 2215]
+            [1483 5566]]
+        Rows: True labels (0 = No Diabetes, 1 = Diabetes).
+        Columns: Predicted labels (0 = No Diabetes, 1 = Diabetes).
+        [[4875 2215]] (No Diabetes row):
+            4875 (True Negatives, TN): Correctly predicted as “No Diabetes.”
+            2215 (False Positives, FP): Incorrectly predicted as “Diabetes.”
+        [1483 5566] (Diabetes row):
+            1483 (False Negatives, FN): Incorrectly predicted as “No Diabetes.”
+            5566 (True Positives, TP): Correctly predicted as “Diabetes.”
+
+        Quick Calculations
+
+            Total: 4875 + 2215 + 1483 + 5566 = 14,139 (matches support sum).
+            Accuracy: (TN + TP) / Total = (4875 + 5566) / 14139 ≈ 0.74 (matches report).
+            Class 0 Recall: TN / (TN + FP) = 4875 / 7090 ≈ 0.69 (matches).
+            Class 1 Recall: TP / (TP + FN) = 5566 / 7049 ≈ 0.79 (matches)
+
+        Interpretation
+
+            Overall Performance
+                74% Accuracy: consistent with your k-folds (0.7405 mean). It’s correctly classifying 3 out of 4 cases.
+            Class Balance
+                Nearly equal support (7090 vs. 7049) means the dataset is balanced, so accuracy is a fair metric here.
+            Strengths
+                High Recall for Diabetes (0.79): Catches 79% of diabetes cases—good for a medical task where missing cases (FN) is costly.
+                Decent Precision for No Diabetes (0.77): Reliable when ruling out diabetes.
+            Weaknesses
+                Lower Recall for No Diabetes (0.69): Misses 31% of non-diabetes cases (2215 FP), potentially over-diagnosing.
+                Moderate Precision for Diabetes (0.72): 28% of diabetes predictions are wrong (1483 FN).
+            Trade-Offs
+                The model prioritizes recall for Diabetes (0.79) over precision (0.72), reducing missed cases at the cost of more false positives. 
+
+
+Cell 17: State of art
+
+            Purpose: Compares tuned Decision Tree (clf_gini) with a Random Forest Classifier, a stronger model, on the test set.
+            Process:
+                Trains a Random Forest with 100 trees (n_estimators=100) on X_train, y_train.
+                Predicts on X_test and compares accuracy with the Decision Tree’s predictions (y_pred_gini).
+
+        “State-of-the-art” (SOTA) refers to the best-performing models or techniques currently available for a specific task, based on research or practical benchmarks.
+        Context: For tabular data classification (like diabetes prediction), Random Forest, Gradient Boosting (e.g., XGBoost), or neural networks are often SOTA. Random Forest is a practical choice here due to its strength and ease of use.
+
+        Random Forest is an ensemble method that builds multiple decision trees (here, 100) and combines their predictions (e.g., majority voting for classification). It reduces overfitting and improves accuracy over a single tree.
+        Accuracy: The proportion of correct predictions on X_test. In your cell, it’s computed as accuracy_score(y_test, y_pred_rf)—e.g., if it’s 0.80, Random Forest correctly predicts 80% of test cases.
+
+        Benchmarking (Req 5): Comparing  Decision Tree (74% accuracy) with a SOTA model like Random Forest shows how close the model is to top performance. If Random Forest gets, say, 80%, it sets a higher bar and highlights potential improvement.
+        Improvement Insight: Random Forest often outperforms single trees due to ensemble averaging, so a gap (e.g., 74% vs. 80%) suggests your model could be enhanced (e.g., by switching to  RF or tuning further).
+        Justification: Demonstrates your model’s competitiveness or limitations, a key part of ML evaluation.
+
+
+        Decision Tree Accuracy: 0.7395 (~73.95%)
+
+        What It Means: The tuned Decision Tree correctly predicts diabetes status for 73.95% of the test set (14,139 samples).
+        Interpretation: This aligns well with your earlier results:
+            K-Folds mean: 0.7405.
+            Previous test set eval: 0.74.
+
+        Random Forest Accuracy: 0.7232 (~72.32%)
+
+        What It Means: The Random Forest (n_estimators=100) correctly predicts 72.32% of the test set.
+        Interpretation: Slightly lower than the Decision Tree, which is unexpected since Random Forest typically outperforms single trees.
+                Possible Reasons:
+                    Tuning: Your Decision Tree is well-tuned (max_depth=7, etc.), while Random Forest uses default parameters except n_estimators=100. Untuned Random Forest might underperform.
+                    Dataset Fit: Your data might suit a single, tuned tree better (e.g., simple patterns), or the test set aligns closely with the Decision Tree’s splits.
