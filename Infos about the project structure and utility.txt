@@ -86,3 +86,68 @@ Cell 13: Ablation testing
 
     NOTE The variable clf is redefined in each loop iteration with a new DecisionTreeClassifier instance. After the loop ends, clf holds the last model (depth=None), but this doesn’t affect clf_gini from your previous hyperparameter tuning cell (where clf_gini was set to the best model with max_depth=7).
     NOTE Key Point: This cell doesn’t update clf_gini—it’s just testing different depths and printing results. The main model (clf_gini) remains unchanged unless you explicitly reassign it.
+
+Cell 14: Scalability testing
+
+    Purpose: Performs scalability testing by measuring how training time varies with dataset size and tree depth.
+    Process: 
+        Subsamples X_train and y_train at fractions (25%, 50%, 75%, 100%).
+        Tests tree depths (3, 5, 10).
+        Times the fit operation for each combination and prints the results.
+    Output: Shows training time (in seconds) for each size-depth pair, e.g., Data Fraction: 0.5, Depth: 5, Time: 0.0123 seconds.
+
+    Scalability Testing: Fully satisfies this requirement by computing execution time with respect to dataset size (simulating batch size) and tree depth (model complexity). Decision trees don’t use epochs or convergence in the traditional sense, so this adapts well to the algorithm.
+
+    Small Data, Shallow Tree: Fastest (0.0121s at 25%, Depth 3).
+    Full Data, Deep Tree: Slowest (0.1502s at 100%, Depth 10)—~12x slower than the fastest.
+    Pattern: Time grows roughly linearly with data size and slightly more with depth due to increased complexity.
+
+    Key Insights
+
+    Scalability: Your Decision Tree scales reasonably—training is fast (<0.2s) even with full data and depth 10, typical for small-to-medium datasets.
+    Trade-Off: Deeper trees (e.g., 7, your tuned depth) take longer but might improve accuracy (from ablation). Balance time vs. performance.
+    Practicality: Times are low, so scalability isn’t a bottleneck here, but this confirms deeper models and more data demand more computation.
+    Confirm 7 depth.
+
+Cell 15 : K-Folds Cross-Validation
+
+    Purpose: Implements stratified k-folds cross-validation with 10 runs to evaluate the tuned Decision Tree model, computing multiple metrics and their mean/std.
+    Process:
+
+        Loops over 10 seeds (different random splits).
+        For each seed, performs 5-fold stratified cross-validation on X and y.
+        Within each fold, splits the training data into 90% train and 10% validation.
+        Trains on the 90% subset (X_train_sub, y_train_sub) and predicts on the test fold (X_test_fold).
+        Collects accuracy, precision, recall, and F1-score, then computes mean and std.
+
+    Output: Prints mean and standard deviation for each metric across 50 evaluations (10 runs × 5 folds).
+
+    Accuracy
+
+        Definition: The proportion of correct predictions (both true positives and true negatives) out of all predictions.
+        Formula: (TP + TN) / (TP + TN + FP + FN), where TP = true positives, TN = true negatives, FP = false positives, FN = false negatives.
+        Output: Accuracy - Mean: 0.7405, Std: 0.0037
+            Mean (0.7405): On average, your model correctly predicts diabetes status 74.05% of the time across 50 evaluations (10 runs × 5 folds).
+            Std (0.0037): The accuracy varies by only ±0.37% across runs, indicating high stability.
+    Precision
+
+        Definition: The proportion of predicted positives (1s) that are actually positive. It measures how reliable a positive prediction is.
+        Formula: TP / (TP + FP).
+        Your Output: Precision - Mean: 0.7222, Std: 0.0088
+            Mean (0.7222): When your model predicts diabetes (1), it’s correct 72.22% of the time. About 28% of positive predictions are false positives.
+            Std (0.0088): Precision varies by ±0.88%, showing consistent performance.
+    Recall (Sensitivity)
+
+        Definition: The proportion of actual positives (1s) that are correctly predicted. It measures how well the model catches all positive cases.
+        Formula: TP / (TP + FN).
+        Your Output: Recall - Mean: 0.7825, Std: 0.0171
+            Mean (0.7825): The model identifies 78.25% of actual diabetes cases, missing about 22% (false negatives).
+            Std (0.0171): Recall fluctuates by ±1.71%, suggesting slightly more variability than other metrics.
+
+    F1-Score
+
+        Definition: The harmonic mean of precision and recall, balancing the trade-off between them. It’s useful when classes are imbalanced.
+        Formula: 2 * (Precision * Recall) / (Precision + Recall).
+        Your Output: F1 - Mean: 0.7509, Std: 0.0047
+            Mean (0.7509): An F1 of 75.09% reflects a good balance between precision (72.22%) and recall (78.25%).
+            Std (0.0047): F1 varies by ±0.47%, indicating stable performance.
