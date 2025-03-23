@@ -30,3 +30,46 @@ Cell 6: Correlation between any features
     Negative correlations suggest the opposite (e.g., higher physical activity might reduce diabetes likelihood).
 
     While this plot focuses on the target, it’s a reminder to check for multicollinearity (high correlations between features) later, as it can affect models like linear regression.
+
+Cell 7: Heatmap
+
+    Creates a correlation heatmap for df.
+    cmap='coolwarm': Applies the “coolwarm” color scheme—blue for negative correlations, red for positive ones, and neutral colors near zero.
+    Rows and columns correspond to the features (columns) in df.
+    Each cell’s color and number represent the correlation between the row and column features.
+
+    Spotting multicollinearity:
+
+    High correlations (e.g., above 0.8 or below -0.8) between features suggest redundancy. This can affect machine learning models like linear regression by causing overfitting or unstable predictions.
+
+    Understanding relationships:
+
+    It reveals how features relate to each other and to the target variable (if included in df). For example, in a diabetes dataset, you might see BMI and weight strongly correlated, which aligns with real-world expectations.
+
+    Reading: 
+        Diagonal: Cells where a feature correlates with itself (e.g., “Age” vs. “Age”) will show 1 (bright red), since they’re perfectly correlated.
+        Target Correlations: “Diabetes” is the target so its row or column shows how each feature correlates with it—useful for identifying key predictors.
+        Feature Pairs: Off-diagonal cells show relationships between different features. 
+        For example:
+        “Age” vs. “BMI” = 0.6 (red): As age increases, BMI tends to increase.
+        “Exercise” vs. “BMI” = -0.4 (blue): More exercise is associated with lower BMI.
+
+            Color Guide:
+
+            Red: Positive correlation (features move together).
+            Blue: Negative correlation (features move oppositely).
+            White/Pale: Little to no correlation.
+
+Cell 9: Data splitting
+    
+    Prepares the dataset for training and evaluating a machine learning model by splitting it into training and testing sets.
+    Defining the target variable (y)
+        y = (df['Diabetes']).astype(int): This extracts the 'Diabetes' column from (df) and converts it to integers. This column is your target variable—what you aim to predict (e.g., 0 for no diabetes, 1 for diabetes).
+    Defining the Feature Variables (X)
+        X = df.loc[:, df.columns != 'Diabetes']: This selects all columns in df except 'Diabetes'. These are your features—the inputs your model will use to make predictions.
+
+    X_train, y_train: Training features and target (70% of the data).
+    X_test, y_test: Testing features and target (30% of the data).
+
+Cell 15: Model instance
+    
