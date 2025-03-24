@@ -83,7 +83,7 @@ Cell 11: Ablation testing
     NOTE The variable clf is redefined in each loop iteration with a new DecisionTreeClassifier instance. After the loop ends, clf holds the last model (depth=None), but this doesn’t affect clf_gini from your previous hyperparameter tuning cell (where clf_gini was set to the best model with max_depth=7).
     NOTE Key Point: This cell doesn’t update clf_gini—it’s just testing different depths and printing results. The main model (clf_gini) remains unchanged unless you explicitly reassign it.
 
-Cell 14: Scalability testing
+Cell 12: Scalability testing
 
     Purpose: Performs scalability testing by measuring how training time varies with dataset size and tree depth.
     Process: 
@@ -105,7 +105,7 @@ Cell 14: Scalability testing
     Practicality: Times are low, so scalability isn’t a bottleneck here, but this confirms deeper models and more data demand more computation.
     Confirm 7 depth.
 
-Cell 15 : K-Folds Cross-Validation
+Cell 13 : K-Folds Cross-Validation
 
     Purpose: Implements stratified k-folds cross-validation with 10 runs to evaluate the tuned Decision Tree model, computing multiple metrics and their mean/std.
     Process:
@@ -148,7 +148,7 @@ Cell 15 : K-Folds Cross-Validation
             Mean (0.7509): An F1 of 75.09% reflects a good balance between precision (72.22%) and recall (78.25%).
             Std (0.0047): F1 varies by ±0.47%, indicating stable performance.
 
-Cell 16: Evaluation metrics
+Cell 14: Evaluation metrics
 
     Purpose: Evaluates the tuned Decision Tree model (clf_gini) on the initial test set (X_test) by computing standard classification metrics and a confusion matrix.
     Process:
